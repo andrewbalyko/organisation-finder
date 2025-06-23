@@ -14,7 +14,7 @@ st.title("🏢 Organization Finder")
 st.markdown("Find the best organizations that match your needs using AI")
 
 # Your n8n webhook URL - REPLACE WITH YOUR ACTUAL URL
-WEBHOOK_URL = "https://roamler.app.n8n.cloud/webhook-test/7db3facc-bd1c-4c4f-bb0b-6b919a25d74f"
+WEBHOOK_URL = "https://roamler.app.n8n.cloud/webhook/7db3facc-bd1c-4c4f-bb0b-6b919a25d74f"
 
 # Initialize session state for chat history and case management
 if "messages" not in st.session_state:
@@ -281,3 +281,4 @@ if st.session_state.messages:
             st.metric("AI Responses", len(assistant_messages))
         with col3:
             st.metric("Organizations Found", total_orgs_found)
+
