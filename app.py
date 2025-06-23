@@ -4,14 +4,10 @@ import json
 
 # Page configuration
 st.set_page_config(
-    page_title="Organization Finder",
-    page_icon="🏢",
+    page_title="Handover",
+    page_icon="🤝",
     layout="wide"
 )
-
-# Title and description
-st.title("🏢 Organization Finder")
-st.markdown("Find the best organizations that match your needs using AI")
 
 # Your n8n webhook URL - REPLACE WITH YOUR ACTUAL URL
 WEBHOOK_URL = "https://roamler.app.n8n.cloud/webhook/7db3facc-bd1c-4c4f-bb0b-6b919a25d74f"
@@ -23,6 +19,50 @@ if "user_email" not in st.session_state:
     st.session_state.user_email = ""
 if "case_id" not in st.session_state:
     st.session_state.case_id = None
+if "show_welcome" not in st.session_state:
+    st.session_state.show_welcome = True
+
+# Welcome popup
+if st.session_state.show_welcome:
+    # Add custom CSS for the button color
+    st.markdown("""
+    <style>
+    .stButton > button {
+        background-color: #1e7a78 !important;
+        color: white !important;
+        border: none !important;
+    }
+    .stButton > button:hover {
+        background-color: #0f5452 !important;
+        color: white !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+    
+    # Create a modal-like dialog using columns and containers
+    col1, col2, col3 = st.columns([1, 2, 1])
+    
+    with col2:
+        st.markdown("## 🤝 Welcome to Handover!")
+        
+        st.markdown("""
+        Here you can find volunteering organisations that suits your needs.
+        
+        We collected information about many volunteering organisations, make this data structured and available for you. Now you can specify your request in a free-form message and Handover will suggest for you several organisations that are working with what you need.
+        
+        Try it out and if you have any feedback, reach out to **adbalyko@gmail.com** or via [LinkedIn](https://www.linkedin.com/in/andrey-balyko-a511b1108/)
+        """)
+        
+        if st.button("🔍 Go to search", type="primary", use_container_width=True):
+            st.session_state.show_welcome = False
+            st.rerun()
+    
+    # Don't show the rest of the app while welcome popup is active
+    st.stop()
+
+# Title and description (shown after welcome popup)
+st.markdown("<h1 style='text-align: center;'>🤝 Handover</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center;'>Find the best organizations that match your needs using AI</p>", unsafe_allow_html=True)
 
 
 # Sidebar for user email and case management
@@ -281,4 +321,3 @@ if st.session_state.messages:
             st.metric("AI Responses", len(assistant_messages))
         with col3:
             st.metric("Organizations Found", total_orgs_found)
-
